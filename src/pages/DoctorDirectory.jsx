@@ -2,13 +2,13 @@ import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Star, Clock, MapPin, Search } from 'lucide-react'
-
+import { API_URL } from '../config'
 export default function DoctorDirectory() {
   const [doctors, setDoctors] = useState([])
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/doctors')
+    fetch(`${API_URL}/api/doctors`)
       .then(r => r.json())
       .then(d => setDoctors(d.doctors || []))
   }, [])

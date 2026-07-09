@@ -43,7 +43,7 @@ export default function Appointments() {
     setLoading(true)
     try {
       const doctor = doctors.find(d => d.id === parseInt(form.doctorId))
-      const res = await fetch('http://localhost:5000/api/appointments/book', {
+      const res = await fetch(`${API_URL}/api/appointments/book`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, doctorName: doctor?.name, specialization: doctor?.specialization, ward: doctor?.ward, floor: doctor?.floor })

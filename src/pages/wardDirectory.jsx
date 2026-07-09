@@ -2,14 +2,14 @@ import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Bed, Clock, Search } from 'lucide-react'
-
+import { API_URL } from '../config'
 export default function WardDirectory() {
   const [wards, setWards] = useState([])
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('All')
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/wards')
+    fetch(`${API_URL}/api/wards`)
       .then(r => r.json())
       .then(d => setWards(d.wards || []))
   }, [])

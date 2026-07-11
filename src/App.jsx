@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 import Home from './pages/Home'
 import SymptomChecker from './pages/SymptomChecker'
 import HospitalLocator from './pages/HospitalLocator'
@@ -13,38 +14,59 @@ import Emergency from './pages/Emergency'
 import AIChat from './pages/AIChat'
 import HealthRisk from './pages/HealthRisk'
 import PrescriptionScanner from './pages/PrescriptionScanner'
-import Navbar from './components/Navbar'
 import HealthDashboard from './pages/HealthDashboard'
 import NearbyPharmacy from './pages/NearbyPharmacy'
 import AIDoctor from './pages/AIDoctor'
 import BloodBank from './pages/BloodBank'
+import Navbar from './components/Navbar'
+import FloatingChat from './components/FloatingChat'
+import ScrollToTop from './components/ScrollToTop'
+import LoadingScreen from './components/LoadingScreen'
+import PageTransition from './components/PageTransition'
+
+function AnimatedRoutes() {
+  const location = useLocation()
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/symptoms" element={<PageTransition><SymptomChecker /></PageTransition>} />
+        <Route path="/hospitals" element={<PageTransition><HospitalLocator /></PageTransition>} />
+        <Route path="/medicines" element={<PageTransition><MedicineSearch /></PageTransition>} />
+        <Route path="/telemedicine" element={<PageTransition><Telemedicine /></PageTransition>} />
+        <Route path="/map" element={<PageTransition><HospitalMap /></PageTransition>} />
+        <Route path="/wards" element={<PageTransition><WardDirectory /></PageTransition>} />
+        <Route path="/appointments" element={<PageTransition><Appointments /></PageTransition>} />
+        <Route path="/doctors" element={<PageTransition><DoctorDirectory /></PageTransition>} />
+        <Route path="/emergency" element={<PageTransition><Emergency /></PageTransition>} />
+        <Route path="/chat" element={<PageTransition><AIChat /></PageTransition>} />
+        <Route path="/health-risk" element={<PageTransition><HealthRisk /></PageTransition>} />
+        <Route path="/prescription" element={<PageTransition><PrescriptionScanner /></PageTransition>} />
+        <Route path="/vitals" element={<PageTransition><HealthDashboard /></PageTransition>} />
+        <Route path="/pharmacy" element={<PageTransition><NearbyPharmacy /></PageTransition>} />
+        <Route path="/ai-doctor" element={<PageTransition><AIDoctor /></PageTransition>} />
+        <Route path="/blood-bank" element={<PageTransition><BloodBank /></PageTransition>} />
+      </Routes>
+    </AnimatePresence>
+  )
+}
+
 function App() {
+  const [loading, setLoading] = useState(true)
+
   return (
     <BrowserRouter>
-      <div className="min-h-screen" style={{ background: '#FDF6F4' }}>
-        <Navbar />
-        <AnimatePresence mode="wait">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/symptoms" element={<SymptomChecker />} />
-            <Route path="/hospitals" element={<HospitalLocator />} />
-            <Route path="/medicines" element={<MedicineSearch />} />
-            <Route path="/telemedicine" element={<Telemedicine />} />
-            <Route path="/map" element={<HospitalMap />} />
-            <Route path="/wards" element={<WardDirectory />} />
-            <Route path="/appointments" element={<Appointments />} />
-            <Route path="/doctors" element={<DoctorDirectory />} />
-            <Route path="/emergency" element={<Emergency />} />
-            <Route path="/chat" element={<AIChat />} />
-            <Route path="/health-risk" element={<HealthRisk />} />
-            <Route path="/prescription" element={<PrescriptionScanner />} />
-            <Route path="/vitals" element={<HealthDashboard />} />
-            <Route path="/pharmacy" element={<NearbyPharmacy />} />
-            <Route path="/ai-doctor" element={<AIDoctor />} />
-<Route path="/blood-bank" element={<BloodBank />} />
-          </Routes>
-        </AnimatePresence>
-      </div>
+      <AnimatePresence>
+        {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+      </AnimatePresence>
+      {!loading && (
+        <div className="min-h-screen" style={{ background: '#FDF6F4' }}>
+          <Navbar />
+          <AnimatedRoutes />
+          <FloatingChat />
+          <ScrollToTop />
+        </div>
+      )}
     </BrowserRouter>
   )
 }

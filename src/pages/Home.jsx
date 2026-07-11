@@ -1,7 +1,37 @@
+
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Activity, MapPin, Pill, Video, Mic, Shield, Users, Clock, Sparkles, Brain, ArrowRight } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+function AnimatedCounter({ target, suffix = '' }) {
+  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+  const [started, setStarted] = useState(false)
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started) { setStarted(true) }
+    }, { threshold: 0.5 })
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!started) return
+    const num = parseInt(target.replace(/\D/g, ''))
+    let start = 0
+    const duration = 2000
+    const step = num / (duration / 16)
+    const timer = setInterval(() => {
+      start += step
+      if (start >= num) { setCount(num); clearInterval(timer) }
+      else setCount(Math.floor(start))
+    }, 16)
+    return () => clearInterval(timer)
+  }, [started])
+
+  return <span ref={ref}>{count}{suffix}</span>
+}
 const features = [
   { icon: <Brain size={26} />, title: 'AI Symptom Checker', desc: 'Describe symptoms in Hindi, Telugu or Tamil. Get instant AI diagnosis with confidence scores.', path: '/symptoms' },
   { icon: <MapPin size={26} />, title: 'Hospital Locator', desc: 'Find nearest govt hospitals and PHCs with real-time bed availability.', path: '/hospitals' },
@@ -155,24 +185,26 @@ export default function Home() {
       </div>
 
       {/* Stats */}
-      <section className="px-6 py-16" style={{ background: '#FBF0EC' }}>
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-5">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="text-center p-7 rounded-3xl bg-white"
-              style={{ boxShadow: '0 8px 24px rgba(194,68,122,0.06)' }}
-            >
-              <div className="flex justify-center mb-3" style={{ color: '#C2447A' }}>{stat.icon}</div>
-              <div className="text-3xl font-bold mb-1" style={{ color: '#2E1F24' }}>{stat.value}</div>
-              <div className="text-sm font-medium" style={{ color: '#6B4F56' }}>{stat.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      {stats.map((stat, i) => (
+  <motion.div key={i}
+    initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+    whileHover={{ y: -8, scale: 1.03 }}
+    className="text-center p-7 rounded-3xl relative overflow-hidden"
+    style={{ background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.9)', boxShadow: '0 8px 32px rgba(194,68,122,0.08)' }}>
+    <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
+      className="flex justify-center mb-3" style={{ color: '#C2447A' }}>
+      {stat.icon}
+    </motion.div>
+    <div className="text-3xl font-black mb-1" style={{ color: '#2E1F24' }}>
+      <AnimatedCounter target={stat.value} suffix={stat.value.includes('+') ? '+' : ''} />
+    </div>
+    <div className="text-sm font-semibold" style={{ color: '#6B4F56' }}>{stat.label}</div>
+    <div className="absolute inset-0 rounded-3xl opacity-0 hover:opacity-100 transition-opacity duration-500"
+      style={{ background: 'linear-gradient(135deg, rgba(232,132,159,0.05), rgba(194,68,122,0.05))' }}/>
+  </motion.div>
+))}
+
 
       {/* About + Features */}
       <section className="py-20 px-6" style={{ background: '#FBF0EC' }}>

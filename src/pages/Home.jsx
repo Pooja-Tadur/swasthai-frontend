@@ -1,8 +1,7 @@
-
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
 import { Activity, MapPin, Pill, Video, Mic, Shield, Users, Clock, Sparkles, Brain, ArrowRight } from 'lucide-react'
-import { useEffect, useRef } from 'react'
 function AnimatedCounter({ target, suffix = '' }) {
   const [count, setCount] = useState(0)
   const ref = useRef(null)

@@ -1,3 +1,6 @@
+import { useTheme } from '../context/ThemeContext'
+import { Moon, Sun } from 'lucide-react'
+
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -47,7 +50,7 @@ const SwasthLogo = () => (
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
-
+  const { dark, setDark } = useTheme()
   return (
     <>
       <motion.nav
@@ -96,7 +99,12 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
-
+            <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+  onClick={() => setDark(!dark)}
+  className="hidden md:flex w-9 h-9 rounded-xl items-center justify-center"
+  style={{ background: dark ? 'rgba(255,255,255,0.1)' : 'rgba(194,68,122,0.08)', color: dark ? '#F5F1E8' : '#C2447A' }}>
+  {dark ? <Sun size={16}/> : <Moon size={16}/>}
+</motion.button>
           <div className="flex items-center gap-2">
             <Link to="/emergency">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}

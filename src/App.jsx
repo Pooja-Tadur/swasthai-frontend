@@ -23,7 +23,7 @@ import FloatingChat from './components/FloatingChat'
 import ScrollToTop from './components/ScrollToTop'
 import LoadingScreen from './components/LoadingScreen'
 import PageTransition from './components/PageTransition'
-
+import { useTheme } from './context/ThemeContext'
 function AnimatedRoutes() {
   const location = useLocation()
   return (
@@ -53,14 +53,16 @@ function AnimatedRoutes() {
 
 function App() {
   const [loading, setLoading] = useState(true)
-
+  const { dark } = useTheme()
   return (
     <BrowserRouter>
       <AnimatePresence>
         {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
       </AnimatePresence>
       {!loading && (
-        <div className="min-h-screen" style={{ background: '#FDF6F4' }}>
+        <div className="min-h-screen transition-colors duration-500"
+  style={{ background: dark ? '#0F1117' : '#FDF6F4', color: dark ? '#F5F1E8' : '#2E1F24' }}>
+
           <Navbar />
           <AnimatedRoutes />
           <FloatingChat />

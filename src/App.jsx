@@ -24,6 +24,9 @@ import ScrollToTop from './components/ScrollToTop'
 import LoadingScreen from './components/LoadingScreen'
 import PageTransition from './components/PageTransition'
 import { useTheme } from './context/ThemeContext'
+import OutbreakTracker from './pages/OutbreakTracker'
+import CommunityPortal from './pages/CommunityPortal'
+import PaymentGateway from './pages/PaymentGateway'
 function AnimatedRoutes() {
   const location = useLocation()
   return (
@@ -46,6 +49,9 @@ function AnimatedRoutes() {
         <Route path="/pharmacy" element={<PageTransition><NearbyPharmacy /></PageTransition>} />
         <Route path="/ai-doctor" element={<PageTransition><AIDoctor /></PageTransition>} />
         <Route path="/blood-bank" element={<PageTransition><BloodBank /></PageTransition>} />
+        <Route path="/outbreak" element={<PageTransition><OutbreakTracker /></PageTransition>} />
+<Route path="/community" element={<PageTransition><CommunityPortal /></PageTransition>} />
+<Route path="/payment" element={<PageTransition><PaymentGateway /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   )

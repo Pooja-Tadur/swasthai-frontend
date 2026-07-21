@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Heart, Menu, X, AlertTriangle } from 'lucide-react'
-
 const navLinks = [
   { path: '/', label: 'Home' },
   { path: '/symptoms', label: 'Symptoms' },
@@ -15,6 +14,9 @@ const navLinks = [
   { path: '/map', label: 'Map' },
   { path: '/ai-doctor', label: 'AI Doctor' },
   { path: '/blood-bank', label: 'Blood Bank' },
+  { path: '/outbreak', label: 'Outbreak' },
+  { path: '/community', label: 'CHW Portal' },
+  { path: '/payment', label: 'Payment' },
   { path: '/medicines', label: 'Medicines' },
   { path: '/pharmacy', label: 'Pharmacy' },
   { path: '/telemedicine', label: 'Video Call' },
@@ -23,6 +25,7 @@ const navLinks = [
   { path: '/health-risk', label: 'Risk Check' },
   { path: '/vitals', label: 'Vitals' },
 ]
+
 const SwasthLogo = () => (
   <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
     <defs>
